@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- I18n path filter -->
+	<filter>
+		<filter-name>i18n-path-filter</filter-name>
+		<filter-class>i18n.I18nPathFilter</filter-class>
+		<init-param>
+			<param-name>lang-regex</param-name>
+			<param-value>(/it|/en)</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>i18n-path-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Locale Fall Back -->
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
+		<param-value>en</param-value>
+	</context-param>
+
+
+	<servlet>
+		<!-- https://developers.google.com/appengine/docs/java/config/appconfig#Java_appengine_web_xml_Warmup_requests -->
+		<!-- Using a custom warmup servlet -->
+		<servlet-name>_ah_warmup</servlet-name>
+
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>it.aqquadro.JerseyApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>_ah_warmup</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>
